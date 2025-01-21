@@ -87,6 +87,7 @@ const DemoPage: React.FC = () => {
         </div>
         <div className="flex-grow">
           <VideoPlayer
+            key={playerState.showControls ? 'show' : 'hide'} // Change key to force re-render
             autoplay={playerState.autoplay}
             controls={playerState.showControls}
             url={currentVideo}
