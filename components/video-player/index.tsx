@@ -40,8 +40,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = memo(
     });
 
     return (
-      <div className={`relative w-full h-auto ${className}`}>
-        <div className="relative w-full h-0 pb-[56.25%]">
+      <div className={`relative w-full h-auto`}>
+        <div className={`relative w-full h-0 pb-[56.25%] ${className}`}>
           <ReactPlayer
             ref={playerRef}
             url={url}
@@ -59,17 +59,19 @@ const VideoPlayer: React.FC<VideoPlayerProps> = memo(
             muted={autoplay}
             height="100%"
             width="100%"
-            className="absolute top-0 left-0"
+            className="absolute top-0 left-0 bg-black"
           />
         </div>
-        <div className="mt-4">
-          <Progress
-            currentTime={currentTime}
-            duration={duration}
-            playedProgress={playedProgress}
-          />
-          {showCustomControls && (
-            <div className="flex items-center justify-end mt-2">
+        <div className="mt-2 flex flex-1">
+          <div className="bg-slate-100 p-4 flex gap-2 sm:items-end flex-col sm:flex-row rounded-lg w-full">
+            <div className="flex-1">
+              <Progress
+                currentTime={currentTime}
+                duration={duration}
+                playedProgress={playedProgress}
+              />
+            </div>
+            {showCustomControls && (
               <ControlButtons
                 playing={playing}
                 handlePlay={handlePlay}
@@ -77,8 +79,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = memo(
                 handleRestart={handleRestart}
                 handleStop={handleStop}
               />
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
     );

@@ -4,34 +4,9 @@ import React, { useState } from 'react';
 
 import { demoVideos } from '@/data/demo-videos';
 
+import PlayerControl from '@/components/player-control';
 import Playlist from '@/components/playlist';
-import VideoPlayer from './video-player';
-
-interface PlayerControlProps {
-  label: string;
-  checked: boolean;
-  onChange: (checked: boolean) => void;
-}
-
-const PlayerControl: React.FC<PlayerControlProps> = ({
-  label,
-  checked,
-  onChange,
-}) => {
-  return (
-    <div>
-      <label className="flex items-center gap-2">
-        <input
-          type="checkbox"
-          checked={checked}
-          onChange={(e) => onChange(e.target.checked)}
-          className="h-5 w-5 text-blue-600"
-        />
-        {label}
-      </label>
-    </div>
-  );
-};
+import VideoPlayer from '@/components/video-player';
 
 const VideoPlayerDemo: React.FC = () => {
   const [currentVideo, setCurrentVideo] = useState<string>(
@@ -81,6 +56,7 @@ const VideoPlayerDemo: React.FC = () => {
               url={currentVideo}
               showCustomControls={playerState.showCustomControls}
               loop={playerState.loop}
+              className=""
             />
           </div>
           <div className="w-full md:w-1/3 relative">
@@ -93,28 +69,23 @@ const VideoPlayerDemo: React.FC = () => {
                 handlePlayerStateChange('loop', !playerState.loop)
               }
             />
+            <div className="space-y-4 mt-5">
+              <PlayerControl
+                label="Show Controls"
+                checked={playerState.showControls}
+                onChange={(checked) =>
+                  handlePlayerStateChange('showControls', checked)
+                }
+              />
+              <PlayerControl
+                label="Show Custom Controls"
+                checked={playerState.showCustomControls}
+                onChange={(checked) =>
+                  handlePlayerStateChange('showCustomControls', checked)
+                }
+              />
+            </div>
           </div>
-        </div>
-        <div className="space-y-4">
-          <PlayerControl
-            label="Show Controls"
-            checked={playerState.showControls}
-            onChange={(checked) =>
-              handlePlayerStateChange('showControls', checked)
-            }
-          />
-          <PlayerControl
-            label="Show Custom Controls"
-            checked={playerState.showCustomControls}
-            onChange={(checked) =>
-              handlePlayerStateChange('showCustomControls', checked)
-            }
-          />
-          <PlayerControl
-            label="Loop"
-            checked={playerState.loop}
-            onChange={(checked) => handlePlayerStateChange('loop', checked)}
-          />
         </div>
       </div>
     </div>

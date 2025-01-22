@@ -2,6 +2,8 @@ import React from 'react';
 
 import { RxLoop } from 'react-icons/rx';
 
+import { cn } from '@/lib/utils';
+
 import { Video } from '@/types/video';
 
 interface PlaylistProps {
@@ -20,27 +22,41 @@ const Playlist: React.FC<PlaylistProps> = ({
   toggleLoop,
 }) => {
   return (
-    <div className="border border-gray-300 rounded-md shadow-sm">
-      <div className="rounded-t-md p-2 border-b">
+    <div className="bg-white rounded-lg border overflow-hidden">
+      <div className="flex items-center justify-between p-4 border-b">
+        <h3 className="text-xl font-semibold text-gray-800">Playlist</h3>
         <RxLoop
-          className={`text-2xl cursor-pointer ${
-            loop ? 'text-blue-600' : 'text-gray-600'
-          }`}
+          className={`text-2xl cursor-pointer transition-colors duration-300 ${
+            loop ? 'text-blue-600' : 'text-gray-500'
+          } hover:text-blue-500`}
           onClick={toggleLoop}
           title="Toggle Loop"
         />
       </div>
-      {demoVideos.map((video) => (
-        <div
-          key={video.id}
-          onClick={() => handleVideoChange(video.id)}
-          className={`p-3 cursor-pointer border-b border-gray-200 hover:bg-gray-100 ${
-            selectedVideo === video.id ? 'bg-blue-100' : ''
-          }`}
-        >
-          {video.title}
-        </div>
-      ))}
+      <div className="max-h-64 overflow-y-auto">
+        {demoVideos.map(({ id, title, icon: Icon, iconColor }) => (
+          <div
+            key={id}
+            onClick={() => handleVideoChange(id)}
+            className={cn(
+              'flex items-center justify-between p-4 cursor-pointer transition-all duration-200 hover:bg-gray-50',
+              {
+                'bg-blue-100': selectedVideo === id,
+              },
+            )}
+          >
+            <div className="flex items-center gap-2">
+              <Icon color={iconColor} />
+              <span className="text-gray-700 text-sm capitalize font-medium">
+                {title}
+              </span>
+            </div>
+            {selectedVideo === id && (
+              <span className="text-xs text-blue-600">Now Playing</span>
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

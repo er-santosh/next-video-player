@@ -1,3 +1,10 @@
+import { memo } from 'react';
+
+import { FaPause, FaPlay, FaStop } from 'react-icons/fa6';
+import { MdOutlineRestartAlt } from 'react-icons/md';
+
+import { Button } from '@/components/ui/button';
+
 interface ControlButtonsProps {
   playing?: boolean;
   handlePlay: () => void;
@@ -16,34 +23,38 @@ const ControlButtons = ({
   return (
     <div className="flex space-x-2">
       {playing ? (
-        <button
+        <Button
+          size={'icon'}
+          className="bg-sky-100 hover:bg-sky-200 text-sky-400"
           onClick={handlePause}
-          className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
         >
-          Pause
-        </button>
+          <FaPause />
+        </Button>
       ) : (
-        <button
+        <Button
+          size={'icon'}
+          className="bg-sky-100 hover:bg-sky-200 text-sky-400"
           onClick={handlePlay}
-          className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
         >
-          Play
-        </button>
+          <FaPlay />
+        </Button>
       )}
-      <button
+      <Button
+        size={'icon'}
+        className="bg-orange-100 hover:bg-orange-200 text-orange-400"
         onClick={handleStop}
-        className="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600"
       >
-        Stop
-      </button>
-      <button
+        <FaStop />
+      </Button>
+      <Button
+        size={'icon'}
+        className="bg-green-100 hover:bg-green-200 text-green-400"
         onClick={handleRestart}
-        className="px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600"
       >
-        Restart
-      </button>
+        <MdOutlineRestartAlt />
+      </Button>
     </div>
   );
 };
 
-export default ControlButtons;
+export default memo(ControlButtons);
