@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 
 import { demoVideos } from '@/data/demo-videos';
 
+import Playlist from '@/components/playlist';
 import VideoPlayer from './video-player';
 
 interface PlayerControlProps {
@@ -32,7 +33,7 @@ const PlayerControl: React.FC<PlayerControlProps> = ({
   );
 };
 
-const DemoPage: React.FC = () => {
+const VideoPlayerDemo: React.FC = () => {
   const [currentVideo, setCurrentVideo] = useState<string>(
     demoVideos[0].source,
   );
@@ -44,8 +45,7 @@ const DemoPage: React.FC = () => {
     loop: false,
   });
 
-  const handleVideoChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedId = parseInt(event.target.value);
+  const handleVideoChange = (selectedId: number) => {
     const selectedVideo = demoVideos.find((video) => video.id === selectedId);
 
     if (selectedVideo) {
@@ -66,38 +66,34 @@ const DemoPage: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center p-6">
-      <div className="flex flex-col w-[900px] gap-4">
+      <div className="flex flex-col md:min-w-[700px] lg:min-w-[900px] gap-4">
         <div className="flex items-center justify-between gap-4 px-4">
           <h1 className="text-3xl font-bold text-gray-800">
             Video Player Demo
           </h1>
-          <div>
-            <select
-              value={selectedVideo}
-              onChange={handleVideoChange}
-              className="p-2 text-lg border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              {demoVideos.map((video) => (
-                <option key={video.id} value={video.id}>
-                  {video.title}
-                </option>
-              ))}
-            </select>
-          </div>
         </div>
-        <div className="flex-grow">
-          <VideoPlayer
-            key={playerState.showControls ? 'show' : 'hide'} // Change key to force re-render
-            autoplay={playerState.autoplay}
-            controls={playerState.showControls}
-            url={currentVideo}
-            showCustomControls={playerState.showCustomControls}
-            loop={playerState.loop}
-            style={{
-              height: '500px',
-              width: '900px',
-            }}
-          />
+        <div className="flex flex-col md:flex-row gap-4">
+          <div className="flex-1">
+            <VideoPlayer
+              key={playerState.showControls ? 'show' : 'hide'}
+              autoplay={playerState.autoplay}
+              controls={playerState.showControls}
+              url={currentVideo}
+              showCustomControls={playerState.showCustomControls}
+              loop={playerState.loop}
+            />
+          </div>
+          <div className="w-full md:w-1/3 relative">
+            <Playlist
+              demoVideos={demoVideos}
+              selectedVideo={selectedVideo}
+              loop={playerState.loop}
+              handleVideoChange={handleVideoChange}
+              toggleLoop={() =>
+                handlePlayerStateChange('loop', !playerState.loop)
+              }
+            />
+          </div>
         </div>
         <div className="space-y-4">
           <PlayerControl
@@ -125,4 +121,4 @@ const DemoPage: React.FC = () => {
   );
 };
 
-export default DemoPage;
+export default VideoPlayerDemo;

@@ -10,23 +10,14 @@ import Progress from '@/components/video-player/progress';
 import { usePlayer } from '@/hooks/use-player';
 
 interface VideoPlayerProps
-  extends Pick<ReactPlayerProps, 'url' | 'style' | 'controls' | 'loop'> {
+  extends Pick<ReactPlayerProps, 'url' | 'controls' | 'loop'> {
   autoplay?: boolean;
   showCustomControls?: boolean;
+  className?: string;
 }
 
 const VideoPlayer: React.FC<VideoPlayerProps> = memo(
-  ({
-    style = {
-      height: '100%',
-      width: '100%',
-    },
-    autoplay,
-    showCustomControls,
-    url,
-    controls,
-    loop,
-  }) => {
+  ({ autoplay, showCustomControls, url, controls, loop, className }) => {
     const {
       duration,
       currentTime,
@@ -49,8 +40,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = memo(
     });
 
     return (
-      <>
-        <div style={style}>
+      <div className={`relative w-full h-auto ${className}`}>
+        <div className="relative w-full h-0 pb-[56.25%]">
           <ReactPlayer
             ref={playerRef}
             url={url}
@@ -66,27 +57,30 @@ const VideoPlayer: React.FC<VideoPlayerProps> = memo(
             controls={controls}
             loop={loop}
             muted={autoplay}
-            height={'100%'}
-            width={'100%'}
+            height="100%"
+            width="100%"
+            className="absolute top-0 left-0"
           />
         </div>
-        <Progress
-          currentTime={currentTime}
-          duration={duration}
-          playedProgress={playedProgress}
-        />
-        <div className="flex items-center justify-end mt-2">
+        <div className="mt-4">
+          <Progress
+            currentTime={currentTime}
+            duration={duration}
+            playedProgress={playedProgress}
+          />
           {showCustomControls && (
-            <ControlButtons
-              playing={playing}
-              handlePlay={handlePlay}
-              handlePause={handlePause}
-              handleRestart={handleRestart}
-              handleStop={handleStop}
-            />
+            <div className="flex items-center justify-end mt-2">
+              <ControlButtons
+                playing={playing}
+                handlePlay={handlePlay}
+                handlePause={handlePause}
+                handleRestart={handleRestart}
+                handleStop={handleStop}
+              />
+            </div>
           )}
         </div>
-      </>
+      </div>
     );
   },
 );
